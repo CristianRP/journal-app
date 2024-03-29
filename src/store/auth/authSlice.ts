@@ -27,8 +27,8 @@ export const authSlice = createSlice({
     logout: () => {
 
     },
-    checkingCredentials: () => {
-
+    checkingCredentials: (state) => {
+      state.status = 'checking';
     }
   }
 });
