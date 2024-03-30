@@ -1,33 +1,16 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout';
-import { FormValidations, useForm } from '../../hooks';
+import { useForm } from '../../hooks';
 import { FormEvent, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { startCreatingUserWithEmailPassword } from '../../store/auth';
-
-type FormData = {
-  email: string;
-  password: string;
-  displayName: string;
-}
-
-type FormDataValidations = {
-  email: [() => boolean, string],
-  password: [() => boolean, string],
-  displayName: [() => boolean, string],
-}
+import { startCreatingUserWithEmailAndPassword } from '../../store/auth';
+import { FormData, formValidations } from '.';
 
 const formData: FormData = {
   email: 'cristian@gmail.com',
   password: '123123',
   displayName: 'Cristian Ramirez',
-}
-
-const formValidations: FormValidations<FormDataValidations> = {
-  email: [(value: string) => value.includes('@'), 'Email has to contain an @'],
-  password: [(value: string) => value.length >= 6, 'Password lenght must be greater than 6 letters'],
-  displayName: [(value: string) => value.length >= 1, 'Name is required'],
 }
 
 export const RegisterPage = () => {
@@ -53,7 +36,7 @@ export const RegisterPage = () => {
 
     console.log('dispatching');
     
-    dispatch(startCreatingUserWithEmailPassword({ displayName, email, password }));
+    dispatch(startCreatingUserWithEmailAndPassword({ displayName, email, password }));
   }
 
   return (
