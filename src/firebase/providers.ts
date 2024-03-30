@@ -1,4 +1,4 @@
-import { AuthError, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
+import { AuthError, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { FirebaseAuth } from './config';
 import { AuthParams } from '../store/auth';
 
@@ -76,6 +76,21 @@ export const signInUserWithEmailAndPassword = async({ email, password }: AuthPar
     return {
       ok: false,
       errorMessage: authError.message,
+    }
+  }
+}
+
+export const signOutUser = async() => {
+  try {
+    await signOut( FirebaseAuth );
+    return {
+      ok: true,
+    }
+  } catch (error) {
+    const authError = error as AuthError;
+    return {
+      ok: false,
+      messageError: authError.message,
     }
   }
 }

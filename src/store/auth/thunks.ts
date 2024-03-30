@@ -2,7 +2,7 @@ import { Action, ThunkAction } from '@reduxjs/toolkit';
 
 import { checkingCredentials, login, logout } from '.'
 import { RootState } from '..';
-import { registerUserWithEmailAndPassword, signInUserWithEmailAndPassword, signInWithGoogle } from '../../firebase/providers';
+import { registerUserWithEmailAndPassword, signInUserWithEmailAndPassword, signInWithGoogle, signOutUser } from '../../firebase/providers';
 
 export type AuthParams = {
   email: string;
@@ -50,5 +50,12 @@ export const startSignInUserWithEmailAndPassword = ({ email, password }:AuthPara
     if (!ok) return dispatch(logout( { errorMessage } ));
 
     dispatch(login({ displayName, photoURL, email, password }));
+  }
+}
+
+export const startSignOutUser = ():ThunkAction<void, RootState, unknown, Action<string>> => {
+  return async(dispatch) => {
+    await signOutUser();
+    dispatch(logout({}));
   }
 }
