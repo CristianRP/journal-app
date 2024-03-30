@@ -1,9 +1,9 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Grid, Link, TextField, Typography } from '@mui/material'
+import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout';
 import { FormValidations, useForm } from '../../hooks';
-import { FormEvent, useState } from 'react';
-import { useAppDispatch } from '../../store/hooks';
+import { FormEvent, useMemo, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { startCreatingUserWithEmailPassword } from '../../store/auth';
 
 type FormData = {
@@ -35,6 +35,9 @@ export const RegisterPage = () => {
   const dispatch = useAppDispatch();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  const { status, errorMessage } = useAppSelector(state => state.auth);
+  const isCheckingAuthentication = useMemo(() => status === 'checking', [status]);
+
   const {
     email, password, displayName, onInputChange,
     isFormValid, emailValid, passwordValid, displayNameValid
@@ -55,7 +58,6 @@ export const RegisterPage = () => {
 
   return (
     <AuthLayout title='Register'>
-      <h1>FormValid { JSON.stringify(isFormValid) }</h1>
       <form onSubmit={ onSubmit }>
         <Grid container>
           <Grid item xs={ 12 } sx={{ mt: 2 }}>
@@ -100,8 +102,13 @@ export const RegisterPage = () => {
             />
           </Grid>
           <Grid container spacing={ 2 } sx={{ mb: 2, mt: 1 }}>
+            <Grid item xs={ 12 } display={ errorMessage ? '' : 'none'}>
+              <Alert severity='error'>
+                { errorMessage }
+              </Alert>
+            </Grid>
             <Grid item xs={ 12 }>
-              <Button type='submit' variant='contained' fullWidth>
+              <Button type='submit' variant='contained' fullWidth disabled={ isCheckingAuthentication }>
                 Create Account
               </Button>
             </Grid>
