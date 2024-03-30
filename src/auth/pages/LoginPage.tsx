@@ -24,7 +24,7 @@ export const LoginPage = () => {
   const onSubmit = ( event: FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
     console.log({ email, password});
-    dispatch( checkingAuthentication(email, password) );
+    dispatch( checkingAuthentication() );
   }
 
   const onGoogleSignIn = () => {

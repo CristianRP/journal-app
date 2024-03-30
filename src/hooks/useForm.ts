@@ -50,7 +50,7 @@ export const useForm = <T>( initialForm: T = {} as T, formValidations: FormValid
 
   const isFormValid = useMemo( () => {
     for (const formValue of Object.keys(formValidation)) {
-      if (formValidation[formValue as keyof typeof formValidation] !== null) return false;
+      if (formValidation[formValue as keyof typeof formValidation] !== '') return false;
     }
 
     return true;
