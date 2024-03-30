@@ -43,13 +43,9 @@ export const startCreatingUserWithEmailAndPassword = ({ displayName, email, pass
 
 export const startSignInUserWithEmailAndPassword = ({ email, password }:AuthParams): ThunkAction<void, RootState, unknown, Action<string>> => {
   return async(dispatch) => {
-    dispatch(checkingAuthentication());
-
-    const { ok, displayName, photoURL, errorMessage } = await signInUserWithEmailAndPassword({ email, password });
+    const { ok, errorMessage } = await signInUserWithEmailAndPassword({ email, password });
 
     if (!ok) return dispatch(logout( { errorMessage } ));
-
-    dispatch(login({ displayName, photoURL, email, password }));
   }
 }
 
