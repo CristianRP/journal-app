@@ -31,7 +31,7 @@ export const useForm = <T>( initialForm: T = {} as T, formValidations: FormValid
   const [ formValidation, setFormValidation ] = useState<ValidationResult<T>>({} as ValidationResult<T>);
 
   useEffect(() => {
-    console.log('use-effect');
+    console.log('use-effect', initialForm);
     
     const createValidators = () => {
       const formCheckedValues: Record<string, string> = {} as ValidationResult<T>;
