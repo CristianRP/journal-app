@@ -1,8 +1,8 @@
 import { Action, ThunkAction } from '@reduxjs/toolkit'
-import { collection, doc, setDoc } from 'firebase/firestore/lite'
+import { collection, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 
 import { RootState } from '..'
-import { addNewEmptyNote, savingNewNote, setActiveNote } from './journalSlice'
+import { addNewEmptyNote, savingNewNote, setActiveNote, updateNote } from './journalSlice'
 import { Note } from '../../journal/types'
 import { FirebaseDB } from '../../firebase/config'
 
@@ -27,5 +27,30 @@ export const startNewNote = (): ThunkAction<void, RootState, unknown, Action<str
 
     dispatch(addNewEmptyNote(newNote));
     dispatch(setActiveNote(newNote));
+  }
+}
+
+export const startUpdateNote = (note: Note): ThunkAction<void, RootState, unknown, Action<string>> => {
+  return async(dispatch, getState) => {
+    const { uid } = getState().auth; 
+    const { active } = getState().journal;
+    const { id, body, date, imageUrls, title } = active;
+
+    console.log('active', { id, body, date, imageUrls, title });
+    
+
+    const updatedNote = {
+      ...active,
+      ...note,
+    }
+
+    console.log('updatednote', updatedNote);
+    
+    const document = doc(collection(FirebaseDB, `${uid}/journal/notes`), id);
+
+    await updateDoc(document, updatedNote);
+
+    dispatch(updateNote(updatedNote));
+    dispatch(setActiveNote(updatedNote));
   }
 }

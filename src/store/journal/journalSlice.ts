@@ -32,7 +32,13 @@ export const journalSlice = createSlice({
     },
     setNotes: () => {},
     setSaving: () => {},
-    updateNote: () => {},
+    updateNote: (state, action) => {
+      console.log(action);
+      
+      const updatedNotes = state.notes.filter(note => note.id === action.payload.id);
+      updatedNotes.push(action.payload);
+      state.notes = updatedNotes;
+    },
     deleteNoteById: () => {},
   }
 });
