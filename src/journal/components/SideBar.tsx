@@ -1,11 +1,15 @@
 import { TurnedInNot } from '@mui/icons-material';
 import { Box, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material'
+import { useAppSelector } from '../../store/hooks';
 
 interface SideBarProps {
   drawerWidth: number;
 }
 
 export const SideBar = ({ drawerWidth }: SideBarProps) => {
+
+  const { displayName } = useAppSelector(state => state.auth);
+
   return (
     <Box
       component='nav'
@@ -21,7 +25,7 @@ export const SideBar = ({ drawerWidth }: SideBarProps) => {
       >
         <Toolbar>
           <Typography variant='h6' noWrap component='div'>
-            Cristian Ramírez
+            { displayName }
           </Typography>
         </Toolbar>
         <Divider />
