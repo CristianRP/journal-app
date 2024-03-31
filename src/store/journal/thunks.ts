@@ -50,8 +50,8 @@ export const startUpdateNote = (note: Note): ThunkAction<void, RootState, unknow
 
     await updateDoc(document, updatedNote);
 
-    dispatch(updateNote(updatedNote));
     dispatch(setActiveNote(updatedNote));
+    dispatch(updateNote(updatedNote));
   }
 }
 

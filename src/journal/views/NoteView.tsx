@@ -5,8 +5,11 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { startUpdateNote } from '../../store/journal/thunks'
 import { FormValidations, useForm } from '../../hooks'
 import { Note } from '../types'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { setActiveNote } from '../../store/journal/journalSlice'
+import Swal from 'sweetalert2'
+
+import 'sweetalert2/dist/sweetalert2.css'
 
 interface NoteViewForm {
   title: string;
@@ -28,7 +31,7 @@ const noteViewValidatons: FormValidations<NoteViewValidations> = {
 
 export const NoteView = () => {
 
-  const { active:note } = useAppSelector(state => state.journal);
+  const { active:note, messageSaved, isSaving } = useAppSelector(state => state.journal);
   const dispatch = useAppDispatch();
 
   const { title, body, date, onInputChange } = useForm(note as NoteViewForm, noteViewValidatons);
@@ -42,6 +45,11 @@ export const NoteView = () => {
   //   dispatch(setActiveNote(active))
   // }, [formState])
   
+  useEffect(() => {
+    if (messageSaved.length > 0) {
+      Swal.fire('Updated note', messageSaved, 'success');
+    }
+  }, [messageSaved])
 
   const onSaveNote = () => {
     dispatch(startUpdateNote({ title, body} as Note));
@@ -55,7 +63,9 @@ export const NoteView = () => {
         <Typography fontSize={30} fontWeight='light'>{ dateString }</Typography>
       </Grid>
       <Grid item>
-        <Button onClick={ onSaveNote }>
+        <Button
+          disabled={ isSaving }
+          onClick={ onSaveNote }>
           <SaveOutlined sx={{ fontSize: 30, mr: 1 }} />
           Save
         </Button>
