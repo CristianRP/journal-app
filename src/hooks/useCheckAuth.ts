@@ -13,6 +13,7 @@ export const useCheckAuth = () => {
   const validate = useCallback(() => {
     onAuthStateChanged( FirebaseAuth, async(user) =>{
       if (status === 'authenticated') {
+        if (!user) return;
         return dispatch(startLoadingNotes());
       }
 
