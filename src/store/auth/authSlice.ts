@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface AuthState {
+export interface AuthState {
   status: 'checking' | 'authenticated' | 'not-authenticated';
   uid: string;
   email: string;
