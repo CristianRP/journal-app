@@ -5,6 +5,14 @@ export const demoUser = {
   email: 'cristian@gmail.com',
   displayName: 'Cristian',
   photoURL: 'https://demo.jpg',
+  password: '123123',
+}
+
+export const emptyUser = {
+  uid: undefined,
+  email: undefined,
+  displayName: undefined,
+  photoURL: undefined,
 }
 
 export const initialState: AuthState = {

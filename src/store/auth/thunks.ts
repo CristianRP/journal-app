@@ -21,8 +21,6 @@ export const startGoogleSignIn = (): ThunkAction<void, RootState, unknown, Actio
   return async (dispatch) => {
     dispatch( checkingCredentials() );
     const result = await signInWithGoogle();
-
-    console.log(result);
     
     if ( !result.ok ) return dispatch( logout( result ) );
 
@@ -44,6 +42,7 @@ export const startCreatingUserWithEmailAndPassword = ({ displayName, email, pass
 
 export const startSignInUserWithEmailAndPassword = ({ email, password }:AuthParams): ThunkAction<void, RootState, unknown, Action<string>> => {
   return async(dispatch) => {
+    dispatch(checkingCredentials());
     const { ok, errorMessage } = await signInUserWithEmailAndPassword({ email, password });
 
     if (!ok) return dispatch(logout( { errorMessage } ));
