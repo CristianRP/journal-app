@@ -1,5 +1,5 @@
 export const fileUpload = async(file: File) => {
-  if (!file) throw new Error('No file to upload');
+  if (!file) return null;
 
   const cloudUrl = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/upload`;
   const formData = new FormData();
@@ -18,7 +18,6 @@ export const fileUpload = async(file: File) => {
 
     return cloudRes.secure_url;
   } catch(error) {
-    const uploadError = error as Error;
-    throw new Error(uploadError.message);
+    return null;
   }
 }
