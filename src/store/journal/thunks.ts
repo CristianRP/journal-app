@@ -1,8 +1,8 @@
 import { Action, ThunkAction } from '@reduxjs/toolkit'
-import { collection, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
+import { collection, deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 
 import { RootState } from '..'
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './journalSlice'
+import { addNewEmptyNote, deleteNoteById, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './journalSlice'
 import { Note } from '../../journal/types'
 import { FirebaseDB } from '../../firebase/config'
 import { fileUpload, loadNotes } from '../../helpers'
@@ -77,5 +77,16 @@ export const startUploadingFiles = (files:FileList): ThunkAction<void, RootState
 
     console.log(photosUrls);
     dispatch(setPhotosToActiveNote(photosUrls));
+  }
+}
+
+export const startDeletingNote = (): ThunkAction<void, RootState, unknown, Action<string>> => {
+  return async(dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { active:note } = getState().journal;
+
+    const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
+    await deleteDoc(docRef);
+    dispatch(deleteNoteById(note.id));
   }
 }

@@ -1,8 +1,8 @@
-import { SaveOutlined, UploadOutlined } from '@mui/icons-material'
+import { DeleteOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material'
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material'
 import { ImageGallery } from '../components'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { startUpdateNote, startUploadingFiles } from '../../store/journal/thunks'
+import { startDeletingNote, startUpdateNote, startUploadingFiles } from '../../store/journal/thunks'
 import { FormValidations, useForm } from '../../hooks'
 import { Note } from '../types'
 import { ChangeEvent, useEffect, useMemo, useRef } from 'react'
@@ -55,8 +55,11 @@ export const NoteView = () => {
   const onFileInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.length === 0) return;
 
-    dispatch(startUploadingFiles(target.files!));
-    
+    dispatch(startUploadingFiles(target.files!)); 
+  }
+
+  const onDelete = () => {
+    dispatch(startDeletingNote());
   }
 
   return (
@@ -116,6 +119,20 @@ export const NoteView = () => {
           value={ body }
           onChange={ onInputChange }
         />
+      </Grid>
+
+      <Grid
+        container
+        justifyContent='end'
+      >
+        <Button
+          onClick={ onDelete }
+          sx={{ mt: 2 }}
+          color='error'
+        >
+          <DeleteOutline />
+          Borrar
+        </Button>
       </Grid>
 
       <ImageGallery note={ note } />
