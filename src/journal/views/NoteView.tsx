@@ -6,6 +6,7 @@ import { startUpdateNote } from '../../store/journal/thunks'
 import { FormValidations, useForm } from '../../hooks'
 import { Note } from '../types'
 import { useMemo } from 'react'
+import { setActiveNote } from '../../store/journal/journalSlice'
 
 interface NoteViewForm {
   title: string;
@@ -36,6 +37,11 @@ export const NoteView = () => {
     const newDate = new Date(date);
     return newDate.toUTCString();
   }, [date]);
+
+  // useEffect(() => {
+  //   dispatch(setActiveNote(active))
+  // }, [formState])
+  
 
   const onSaveNote = () => {
     dispatch(startUpdateNote({ title, body} as Note));
