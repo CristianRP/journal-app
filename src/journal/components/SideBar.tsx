@@ -1,6 +1,5 @@
 import { Box, Divider, Drawer, List, Toolbar, Typography } from '@mui/material'
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setActiveNote } from '../../store/journal/journalSlice';
+import { useAppSelector } from '../../store/hooks';
 import { SideBarItem } from '.';
 
 interface SideBarProps {
@@ -11,13 +10,6 @@ export const SideBar = ({ drawerWidth }: SideBarProps) => {
 
   const { displayName } = useAppSelector(state => state.auth);
   const { notes } = useAppSelector(state => state.journal);
-  
-  const dispatch = useAppDispatch();
-
-  const onSelectNote = (noteId: string) => {
-    const note = notes.find(note => note.id === noteId);
-    dispatch(setActiveNote(note));
-  }
 
   return (
     <Box
@@ -41,7 +33,7 @@ export const SideBar = ({ drawerWidth }: SideBarProps) => {
         <List>
           {
             notes.map( note => (
-              <SideBarItem key={ note.id } note={note} onSelectNote={ onSelectNote } />
+              <SideBarItem key={ note.id } note={note} />
             ))
           }
         </List>

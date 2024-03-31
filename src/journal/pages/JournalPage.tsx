@@ -19,7 +19,7 @@ export const JournalPage = () => {
   return (
     <JournalLayout>
       {
-        active
+        Object.keys(active).length >= 1
         ? <NoteView />
         : <NothingSelectedView />
       }

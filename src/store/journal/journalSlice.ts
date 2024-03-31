@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { Note } from '../../journal/types';
 
@@ -12,7 +12,7 @@ interface JournalState {
 const initialState: JournalState = {
   isSaving: false,
   messageSaved: '',
-  notes: [],
+  notes: [] as Note[],
   active: {} as Note,
 }
 
@@ -27,7 +27,7 @@ export const journalSlice = createSlice({
       state.notes.push(action.payload);
       state.isSaving = false;
     },
-    setActiveNote: (state, action) => {
+    setActiveNote: (state, action: PayloadAction<Note>) => {
       state.active = action.payload;
     },
     setNotes: (state, action) => {

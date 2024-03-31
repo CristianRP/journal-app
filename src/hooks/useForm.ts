@@ -31,8 +31,6 @@ export const useForm = <T>( initialForm: T = {} as T, formValidations: FormValid
   const [ formValidation, setFormValidation ] = useState<ValidationResult<T>>({} as ValidationResult<T>);
 
   useEffect(() => {
-    console.log('use-effect', initialForm);
-    
     const createValidators = () => {
       const formCheckedValues: Record<string, string> = {} as ValidationResult<T>;
   
@@ -47,6 +45,10 @@ export const useForm = <T>( initialForm: T = {} as T, formValidations: FormValid
     
     createValidators();
   }, [ formState, formValidations ]);
+
+  useEffect(() => {
+    setFormState(initialForm as FormState<T>);
+  }, [initialForm])
 
   const isFormValid = useMemo( () => {
     for (const formValue of Object.keys(formValidation)) {
