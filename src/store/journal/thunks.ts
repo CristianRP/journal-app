@@ -2,10 +2,10 @@ import { Action, ThunkAction } from '@reduxjs/toolkit'
 import { collection, doc, setDoc, updateDoc } from 'firebase/firestore/lite'
 
 import { RootState } from '..'
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from './journalSlice'
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './journalSlice'
 import { Note } from '../../journal/types'
 import { FirebaseDB } from '../../firebase/config'
-import { loadNotes } from '../../helpers'
+import { fileUpload, loadNotes } from '../../helpers'
 
 export const startNewNote = (): ThunkAction<void, RootState, unknown, Action<string>> => {
   return async(dispatch, getState) => {
@@ -60,5 +60,22 @@ export const startLoadingNotes = (): ThunkAction<void, RootState, unknown, Actio
     const { uid } = getState().auth;
     const notes = await loadNotes(uid);
     dispatch(setNotes(notes));
+  }
+}
+
+export const startUploadingFiles = (files:FileList): ThunkAction<void, RootState, unknown, Action<string>> => {
+  return async(dispatch) => {
+    dispatch(setSaving());
+
+    // await fileUpload(files[0]);
+    const fileUploadPromises = [];
+    for (const file of files) {
+      fileUploadPromises.push(fileUpload(file));
+    }
+    
+    const photosUrls  = await Promise.all(fileUploadPromises);
+
+    console.log(photosUrls);
+    dispatch(setPhotosToActiveNote(photosUrls));
   }
 }

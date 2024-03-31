@@ -2,31 +2,26 @@ import { SaveOutlined, UploadOutlined } from '@mui/icons-material'
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material'
 import { ImageGallery } from '../components'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { startUpdateNote } from '../../store/journal/thunks'
+import { startUpdateNote, startUploadingFiles } from '../../store/journal/thunks'
 import { FormValidations, useForm } from '../../hooks'
 import { Note } from '../types'
-import { ChangeEvent, FormEvent, useEffect, useMemo, useRef } from 'react'
-import { setActiveNote } from '../../store/journal/journalSlice'
+import { ChangeEvent, useEffect, useMemo, useRef } from 'react'
 import Swal from 'sweetalert2'
 
 import 'sweetalert2/dist/sweetalert2.css'
-
-interface NoteViewForm {
-  title: string;
-  body: string;
-  date: number;
-}
 
 interface NoteViewValidations {
   title: [(value: string) => boolean, string];
   body: [() => boolean, string];
   date: [() => boolean, string];
+  imageUrls: [() => boolean, string];
 }
 
 const noteViewValidatons: FormValidations<NoteViewValidations> = {
   title: [(value: string) => value?.length <= 1, 'Title lenght must be greather than 1'],
   body: [() => true, ''],
   date: [() => true, ''],
+  imageUrls: [() => true, '']
 }
 
 export const NoteView = () => {
@@ -34,7 +29,7 @@ export const NoteView = () => {
   const { active:note, messageSaved, isSaving } = useAppSelector(state => state.journal);
   const dispatch = useAppDispatch();
 
-  const { title, body, date, onInputChange } = useForm(note as NoteViewForm, noteViewValidatons);
+  const { title, body, date, onInputChange } = useForm(note, noteViewValidatons);
 
   const dateString = useMemo(() => {
     const newDate = new Date(date);
@@ -60,7 +55,7 @@ export const NoteView = () => {
   const onFileInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     if (target.files?.length === 0) return;
 
-    console.log(target.files);
+    dispatch(startUploadingFiles(target.files!));
     
   }
 
