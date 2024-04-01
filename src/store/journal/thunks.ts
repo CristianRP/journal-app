@@ -87,6 +87,6 @@ export const startDeletingNote = (): ThunkAction<void, RootState, unknown, Actio
 
     const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
     await deleteDoc(docRef);
-    dispatch(deleteNoteById(note.id));
+    dispatch(deleteNoteById(note.id!));
   }
 }

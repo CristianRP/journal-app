@@ -33,7 +33,6 @@ export const LoginPage = () => {
 
   const onSubmit = ( event: FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
-    console.log({ email, password});
 
     if (!isFormValid) return;
 
